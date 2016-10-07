@@ -5,10 +5,10 @@
  */
 package a2.pkg1m9procesosehilos;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,19 +20,26 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        
-    final ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
-     final TareaProgramada tareaProgramada = new TareaProgramada("1");
-       executor.scheduleAtFixedRate(tareaProgramada, 0, 0, TimeUnit.DAYS);
-       
-       
-  
-        
-        
+    public static void main(String[] args) throws InterruptedException {
+
+        final ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+
+        System.out.println("Hora actual = " + new Date());
+        for (int i = 0; i < 3; i++) {
+            Thread.sleep(1000);
+            TareaProgramada tareaProgramada = new TareaProgramada("Tarea");
+            executor.scheduleAtFixedRate(tareaProgramada, 2, 3, TimeUnit.SECONDS);
+        }
+        Thread.sleep(30000);
+        executor.shutdown();
+        while (!executor.isTerminated()) {
+            //Espera
+        }
+        System.out.println("Todos los hilos terminados");
     }
-    
-    
-    
-    
+
+    public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize) {
+        return new ScheduledThreadPoolExecutor(corePoolSize);
+    }
+
 }
