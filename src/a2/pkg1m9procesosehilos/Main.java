@@ -25,7 +25,7 @@ public class Main {
         final ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
 
         System.out.println("Hora actual = " + new Date());
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 1; i++) {
             Thread.sleep(1000);
             TareaProgramada tareaProgramada = new TareaProgramada("Tarea");
             executor.scheduleAtFixedRate(tareaProgramada, 2, 3, TimeUnit.SECONDS);
@@ -35,6 +35,7 @@ public class Main {
         while (!executor.isTerminated()) {
             //Espera
         }
+        executor.awaitTermination(3, TimeUnit.SECONDS);
         System.out.println("Todos los hilos terminados");
     }
 
